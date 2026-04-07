@@ -4,6 +4,7 @@ defmodule TestappWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug TestappWeb.Plugs.FetchCurrentUser
     plug :fetch_live_flash
     plug :put_root_layout, html: {TestappWeb.Layouts, :root}
     plug :protect_from_forgery
@@ -14,10 +15,32 @@ defmodule TestappWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :admin do
+    plug TestappWeb.Plugs.RequireAdmin
+  end
+
+  scope "/admin", TestappWeb.Admin do
+    pipe_through [:browser, :admin]
+
+    get "/products", ProductController, :index
+  end
+
   scope "/", TestappWeb do
     pipe_through :browser
 
+    get "/hello", PageController, :hello
+
     get "/", PageController, :home
+
+    get "/products", ProductController, :index
+    get "/products/:id", ProductController, :show
+
+    get "/register", UserController, :new
+    post "/register", UserController, :create
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.

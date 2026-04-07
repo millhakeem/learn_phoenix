@@ -4,4 +4,8 @@ defmodule TestappWeb.PageController do
   def home(conn, _params) do
     render(conn, :home)
   end
+
+  def hello(conn, _params) do
+    text(conn, "Hello world")
+  end
 end

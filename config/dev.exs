@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :testapp, Testapp.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "phoenix",
+  password: "",
   hostname: "localhost",
   database: "testapp_dev",
   stacktrace: true,
